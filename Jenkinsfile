@@ -89,13 +89,6 @@ pipeline {
     }
   }
   stages {
-    stage('Cloning Git') {
-      steps {
-        git([url: 'git@github.com:SAVsciense/app.git', branch: 'master', credentialsId: 'd585d2e0-e8a7-4cc7-98ec-dce2446a53e9'])
-      }
-    }
-
-
     stage ('Dependency-Check') {
       steps {
         container('jnlp') {
