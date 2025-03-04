@@ -33,7 +33,7 @@ pipeline {
                       name: cosign-pass 
                       key: password
               - name: zap 
-                image: owasp/zap2docker-stable
+                image: zaproxy/zap-stable
                 command:
                 - cat
                 tty: true
