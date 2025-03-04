@@ -23,6 +23,7 @@ pipeline {
                 image: jitesoft/cosign:latest
                 command:
                 - cat
+                - sleep 30000
             resources:
               requests:
                 memory: "1024Mi"
