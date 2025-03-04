@@ -2,7 +2,7 @@ pipeline {
   environment {
     APP_NAME='app-test'
     PROJECT_ID = 'cicd-security-integration'
-    COSIGN_PRIVATE=credentials('test-app-sign-private')
+    // COSIGN_PRIVATE=credentials('test-app-sign-private')
   }
 
   agent {
