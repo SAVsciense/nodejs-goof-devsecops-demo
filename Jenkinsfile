@@ -105,6 +105,7 @@ pipeline {
         }
       }
     }
+  }
 
 
   //   stage('SonarQube Scan') {
@@ -258,17 +259,17 @@ pipeline {
   //     }
   //   }
   //
-  }
-  post {
-    always {
-      publishHTML([allowMissing: true, 
-        alwaysLinkToLastBuild: true, 
-        keepAll: true,
-        reportDir: '../report', 
-        reportFiles: 'zap-report.html',
-        reportName: 'ZAP_REPORT',
-        reportTitles: '', 
-        useWrapperFileDirectly: true])
-    }
-  }
+  // }
+  // post {
+  //   always {
+  //     publishHTML([allowMissing: true, 
+  //       alwaysLinkToLastBuild: true, 
+  //       keepAll: true,
+  //       reportDir: '../report', 
+  //       reportFiles: 'zap-report.html',
+  //       reportName: 'ZAP_REPORT',
+  //       reportTitles: '', 
+  //       useWrapperFileDirectly: true])
+  //   }
+  // }
 }
