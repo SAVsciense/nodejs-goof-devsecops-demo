@@ -26,12 +26,12 @@ pipeline {
                 command:
                 - cat
                 tty: true
-                env: 
-                - name: COSIGN_PASSWORD
-                  valueFrom: 
-                    secretKeyRef: 
-                      name: cosign-pass 
-                      key: password
+                // env: 
+                // - name: COSIGN_PASSWORD
+                //   valueFrom: 
+                //     secretKeyRef: 
+                //       name: cosign-pass 
+                //       key: password
               - name: zap 
                 image: zaproxy/zap-stable
                 command:
