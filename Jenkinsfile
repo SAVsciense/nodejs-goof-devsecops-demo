@@ -18,8 +18,8 @@ pipeline {
             - key: "instance_type"
               operator: "Exists"
               effect: "NoSchedule"
-            nodeSelector:
-              cloud.google.com/gke-nodepool: "spot"
+            // nodeSelector:
+            //   cloud.google.com/gke-nodepool: "spot"
             containers:
               - name: cosign
                 image: jitesoft/cosign:latest
