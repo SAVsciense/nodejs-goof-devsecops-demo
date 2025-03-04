@@ -22,7 +22,6 @@ pipeline {
               - name: cosign
                 image: jitesoft/cosign:latest
                 command:
-                - cat file
                 - sleep 30000
             resources:
               requests:
