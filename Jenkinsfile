@@ -3,6 +3,7 @@ pipeline {
     APP_NAME='app-test'
     PROJECT_ID = 'cicd-security-integration'
     // COSIGN_PRIVATE=credentials('test-app-sign-private')
+    // dceb7c5b-c952-43d9-a06f-9dfcc7887bd3 
   }
 
   agent {
@@ -95,7 +96,9 @@ pipeline {
             --prettyPrint
             --disableBundleAudit
             --disableRubygems
-            ''', odcInstallation: 'dependency-check'
+            ''', 
+            odcInstallation: 'dependency-check',
+            nvdCredentialsId: '2e967df9-bcc8-4d21-b5f6-ec3ed457e6a9'
 
           dependencyCheckPublisher failedNewCritical: 10, failedNewHigh: 20, failedNewLow: 80, failedNewMedium: 40, failedTotalCritical: 10, failedTotalHigh: 20, failedTotalLow: 80, failedTotalMedium: 40, pattern: 'dependency-check-report.xml', stopBuild: true, unstableNewCritical: 5, unstableNewHigh: 10, unstableNewLow: 40, unstableNewMedium: 20, unstableTotalCritical: 5, unstableTotalHigh: 10, unstableTotalLow: 40, unstableTotalMedium: 20 
         }
