@@ -15,12 +15,6 @@ pipeline {
             labels:
               app: jenkins-nodejs
           spec:
-            tolerations:
-            - key: "instance_type"
-              operator: "Exists"
-              effect: "NoSchedule"
-            // nodeSelector:
-            //   cloud.google.com/gke-nodepool: "spot"
             containers:
               - name: cosign
                 image: jitesoft/cosign:latest
