@@ -23,59 +23,6 @@ pipeline {
                 image: jitesoft/cosign:latest
                 command:
                 - cat
-            //     tty: true
-                // env: 
-                // - name: COSIGN_PASSWORD
-                //   valueFrom: 
-                //     secretKeyRef: 
-                //       name: cosign-pass 
-                //       key: password
-              // - name: zap 
-              //   image: zaproxy/zap-stable
-              //   command:
-              //   - cat
-              //   tty: true
-              //   volumeMounts:
-              //   - mountPath: "/zap/wrk"
-              //     name: "workspace-volume"
-              //     readOnly: false
-              // - name: nodejs
-              //   image: sonarsource/sonar-scanner-cli
-              //   command:
-              //   - cat
-              //   tty: true
-              // - name: trivy
-              //   image: aquasec/trivy:latest
-              //   imagePullPolicy: Always
-              //   securityContext:
-              //     privileged: true
-              //     runAsUser: 0
-              //   command:
-              //   - sleep
-              //   args:
-              //   - 9999999
-              // - name: kubectl
-              //   image: yonadev/jnlp-slave-k8s-helm:latest
-              //   imagePullPolicy: Always
-              //   command:
-              //   - sleep
-              //   args:
-              //   - 9999999
-              // - name: buildah
-              //   image: quay.io/buildah/stable:v1.23.1
-              //   command:
-              //   - cat
-              //   tty: true
-              //   securityContext:
-              //     privileged: true
-            //     volumeMounts:
-            //       - name: varlibcontainers
-            //         mountPath: /var/lib/containers
-            // volumes:
-            //   - name: varlibcontainers
-            //   - name: dp-check-pvc
-            //     persistentVolumeClaim:
-            //       claimName: dependency-check-data-pvc
             resources:
               requests:
                 memory: "1024Mi"
