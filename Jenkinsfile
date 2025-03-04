@@ -65,14 +65,25 @@ pipeline {
                 tty: true
                 securityContext:
                   privileged: true
-            //     volumeMounts:
-            //       - name: varlibcontainers
-            //         mountPath: /var/lib/containers
-            // volumes:
-            //   - name: varlibcontainers
-            //   - name: dp-check-pvc
-            //     persistentVolumeClaim:
-            //       claimName: dependency-check-data-pvc
+                volumeMounts:
+                  - name: varlibcontainers
+                    mountPath: /var/lib/containers
+
+              - name: dp
+                image: jenkins/jnlp-agent-docker
+                command:
+                - sleep 30000
+                tty: true
+                securityContext:
+                  privileged: true
+                volumeMounts:
+                  - name: dp-check-pvc
+                    mountPath: /
+            volumes:
+              - name: varlibcontainers
+              - name: dp-check-pvc
+                persistentVolumeClaim:
+                  claimName: dependency-check-data-pvc
             resources:
               requests:
                 memory: "1024Mi"
@@ -88,7 +99,7 @@ pipeline {
 
     stage ('Dependency-Check') {
       steps {
-        container('jnlp') {
+        container('dp') {
           dependencyCheck additionalArguments: ''' 
             -o "./" 
             -s "./"
