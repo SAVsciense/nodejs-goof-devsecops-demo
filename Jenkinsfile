@@ -88,6 +88,13 @@ pipeline {
   '''
     }
   }
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git([url: 'git@github.com:SAVsciense/app.git', branch: 'master', credentialsId: 'd585d2e0-e8a7-4cc7-98ec-dce2446a53e9'])
+      }
+    }
+
 
     stage ('Dependency-Check') {
       steps {
@@ -106,170 +113,5 @@ pipeline {
       }
     }
   }
-
-
-  //   stage('SonarQube Scan') {
-  //     steps {
-  //       container('nodejs') {
-  //         script {
-  //           def scannerHome = tool name: 'sonarqube-scanner';
-  //           withSonarQubeEnv('sq1') {
-  //             sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=test-app -Dsonar.sources=. -Dsonar.css.node=. "
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //   stage('Wait for SonarQube') {
-  //     steps {
-  //       timeout(time: 1, unit: 'MINUTES') {
-  //         waitForQualityGate abortPipeline: true
-  //       }
-  //     }
-  //   }
-  //
-  //   stage("dockerfile_check") {
-  //     steps {
-  //       container("trivy") {
-  //         sh 'mkdir -p reports'
-  //         sh 'trivy config Dockerfile --format template --template "@junit.tpl" -o junit-report.xml '
-  //         junit skipPublishingChecks: true, testResults: 'junit-report.xml', checksName: 'ANTON'
-  //         sh 'trivy config Dockerfile --exit-code 1 --severity CRITICAL '
-  //       }
-  //     }
-  //   }
-  //
-  //
-  //
-  //   stage('Build') {
-  //     steps {
-  //       container('buildah') {
-  //         sh "buildah build -t ${env.PROJECT_ID}/${env.APP_NAME}:${env.BUILD_ID} ."
-  //         sh """
-  //         rm -rf "target/images"
-  //         mkdir -p "target/images"
-  //         buildah push \
-  //           --format docker \
-  //           ${env.PROJECT_ID}/${env.APP_NAME}:${env.BUILD_ID} \
-  //           docker-archive:target/images/test-app.tar 
-  //         ls -la
-  //         """
-  //       }
-  //     }
-  //   }
-  //
-  //   stage("docker_image_scan") {
-  //     steps {
-  //       container('buildah') {
-  //         container("trivy") {
-  //           sh 'mkdir -p reports'
-  //           sh 'trivy image --format template --template "@junit.tpl" -o junit-report.xml --input target/images/test-app.tar'
-  //
-  //           junit skipPublishingChecks: true, testResults: 'junit-report.xml'
-  //           // Scan again and fail on CRITICAL vulns
-  //           sh 'trivy image --exit-code 1 --severity CRITICAL --input target/images/test-app.tar'
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //   stage('Login to GAR') {
-  //     steps {
-  //       container('buildah') {
-  //         sh "cat ${env.STORAGE_ADMIN} | buildah login -u _json_key --password-stdin ${env.LOCATION}-docker.pkg.dev"
-  //       }
-  //       container('cosign') {
-  //         sh "cat ${env.STORAGE_ADMIN} | cosign login -u _json_key --password-stdin ${env.LOCATION}-docker.pkg.dev"
-  //       }
-  //     }
-  //   }
-  //
-  //   stage('tag image and push') {
-  //     steps {
-  //       container('buildah') {
-  //         sh "buildah tag ${env.PROJECT_ID}/${env.APP_NAME}:${env.BUILD_ID} ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/${env.APP_NAME}/app:${env.BUILD_ID}"
-  //         sh "buildah tag ${env.PROJECT_ID}/${env.APP_NAME}:${env.BUILD_ID} ${LOCATION}-docker.pkg.dev/${PROJECT_ID}/${env.APP_NAME}/app:latest"
-  //         sh "buildah push ${env.LOCATION}-docker.pkg.dev/${env.PROJECT_ID}/${env.APP_NAME}/app:${env.BUILD_ID}"
-  //         sh "buildah push ${env.LOCATION}-docker.pkg.dev/${env.PROJECT_ID}/${env.APP_NAME}/app:latest"
-  //       }
-  //     }
-  //   }
-  //
-  //   stage('sign image') {
-  //     steps {
-  //       container('cosign') {
-  //         withCredentials([file(credentialsId: 'test-app-sign-private', variable: 'key')]) {
-  //           sh 'cat `echo $key` > /tmp/cosign.key'
-  //           sh 'cosign sign --key /tmp/cosign.key $LOCATION-docker.pkg.dev/$PROJECT_ID/$APP_NAME/app:latest'
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //   stage("manifest_check") {
-  //     steps {
-  //       container("trivy") {
-  //         sh 'mkdir -p reports'
-  //         sh 'trivy config deployment.yaml --format template --template "@junit.tpl" -o junit-report.xml '
-  //         junit skipPublishingChecks: true, testResults: 'junit-report.xml'
-  //         sh 'trivy config deployment.yaml --exit-code 1 --severity CRITICAL '
-  //       }
-  //     }
-  //   }
-  //
-  //   stage('Deploy to test') {
-  //     steps {
-  //     container("kubectl") {
-  //         withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: env.KUBERNETES_API_URL, clusterName: env.CLUSTER_NAME]) {
-  //           sh 'kubectl apply -f deployment.yaml'
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //   stage("dast") {
-  //     steps {
-  //       container("zap") {
-  //         sh '''
-  //         while true; do
-  //           curl http://app.forever-free.online/ &> /dev/null
-  //           if [[ $? -eq 0 ]]; then
-  //               echo "Site is up!"
-  //               break
-  //           fi
-  //         done
-  //         '''
-  //         sh 'zap-baseline.py -t http://app.forever-free.online/ -I -r zap-report.html'
-  //         sh '''
-  //           mkdir /zap/wrk/workspace/report
-  //           cp /zap/wrk/zap-report.html /zap/wrk/workspace/report/zap-report.html
-  //         '''
-  //       }
-  //     }
-  //   }
-  //
-  //
-  //   stage('Deploy to prod') {
-  //     steps {
-  //     container("kubectl") {
-  //         withKubeConfig([credentialsId: env.CREDENTIALS_ID, serverUrl: env.KUBERNETES_API_URL_PROD, clusterName: env.CLUSTER_NAME_PROD ]) {
-  //           sh 'kubectl apply -f deployment.yaml'
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  // }
-  // post {
-  //   always {
-  //     publishHTML([allowMissing: true, 
-  //       alwaysLinkToLastBuild: true, 
-  //       keepAll: true,
-  //       reportDir: '../report', 
-  //       reportFiles: 'zap-report.html',
-  //       reportName: 'ZAP_REPORT',
-  //       reportTitles: '', 
-  //       useWrapperFileDirectly: true])
-  //   }
-  // }
 }
+
